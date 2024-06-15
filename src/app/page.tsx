@@ -1,10 +1,11 @@
 import Image from "next/image";
 import styles from "./styles/Home.module.css";
+import ReservationSection from "@/app/components/ReservationSection";
 
 export default function Home() {
-    const direccion = process.env.NEXT_PUBLIC_BARBERIA_DIRECCION;
+    // const direccion = process.env.NEXT_PUBLIC_BARBERIA_DIRECCION;
     const telefono = process.env.NEXT_PUBLIC_BARBERIA_TELEFONO;
-    const email = process.env.NEXT_PUBLIC_BARBERIA_EMAIL;
+    // const email = process.env.NEXT_PUBLIC_BARBERIA_EMAIL;
     const nombreBarberia = process.env.NEXT_PUBLIC_BARBERSHOP_NAME;
 
     return (
@@ -41,11 +42,6 @@ export default function Home() {
                 </ul>
             </section>
 
-            <section className={styles.reservation}>
-                <h2>Reserva tu Cita</h2>
-                <p>Evita la espera y asegura tu lugar con nuestro sistema de reservas en línea. ¡Es fácil y rápido!</p>
-            </section>
-
             <section className={styles.contact}>
                 <h2>Contacto</h2>
                 <p>📞 Teléfono: {telefono}</p>
@@ -56,7 +52,7 @@ export default function Home() {
                 {/* Replace '#' with actual social media links */}
                 <a href="#">Instagram</a>
             </footer>
-
+            <ReservationSection />
         </div>
     );
 }
