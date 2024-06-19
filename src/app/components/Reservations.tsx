@@ -16,7 +16,6 @@ const Reservations: React.FC = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-2xl font-semibold mb-4">Reservations</h2>
             <ul>
                 {reservations.map((reservation) => (
                     <li key={reservation.id} className="border-b py-2">
