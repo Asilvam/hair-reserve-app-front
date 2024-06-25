@@ -9,10 +9,10 @@ const Navbar: React.FC = () => {
                 </div>
                 <ul className="flex space-x-4">
                     <li>
-                        <Link href="/" className="text-white hover:text-gray-300">Home</Link>
+                        <Link href="/reservation" className="text-white hover:text-gray-300">Agenda</Link>
                     </li>
                     <li>
-                        <Link href="/reservation" className="text-white hover:text-gray-300">Lista de Reservas</Link>
+                        <Link href="/reserve" className="text-white">Reservar</Link>
                     </li>
                     {/* Add more navigation links as needed */}
                 </ul>

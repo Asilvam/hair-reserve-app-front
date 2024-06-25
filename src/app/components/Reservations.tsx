@@ -1,7 +1,6 @@
-// components/Reservations.tsx
 "use client";
 import React, { useEffect, useState } from 'react';
-import {mockReservations} from "@/app/data/mockReservations";
+import mockReservations from "@/app/data/mockReservations";
 
 type Reservation = {
     id: number;

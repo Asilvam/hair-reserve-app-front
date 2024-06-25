@@ -5,7 +5,7 @@ export default function ReservationPage() {
     return (
         <div className="container mx-auto p-4">
             <Navbar />
-           <Reservations />
+            <Reservations />
         </div>
     );
 }

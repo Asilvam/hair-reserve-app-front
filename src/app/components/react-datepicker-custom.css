@@ -1,0 +1,92 @@
+/* react-datepicker-custom.css */
+
+/* Overall Datepicker styles */
+.react-datepicker {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8; /* Light gray background */
+    border: 1px solid #ccc; /* Light gray border */
+    color: #333; /* Dark gray text */
+}
+
+/* Header styles */
+.react-datepicker__header {
+    background-color: #e0e0e0; /* Medium gray header background */
+    border-bottom: 1px solid #ccc; /* Light gray border */
+    color: #333; /* Dark gray text */
+}
+
+/* Current month and year */
+.react-datepicker__current-month,
+.react-datepicker__current-year {
+    color: #333; /* Dark gray text */
+}
+
+/* Day styles */
+.react-datepicker__day {
+    color: #333; /* Dark gray text */
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+    background-color: #666; /* Dark gray background for selected day */
+    color: #fff; /* White text for selected day */
+}
+
+.react-datepicker__day--today {
+    background-color: #999; /* Medium dark gray background for today */
+    color: #fff; /* White text for today */
+}
+
+.react-datepicker__day:hover {
+    background-color: #bbb; /* Light gray background on hover */
+    color: #fff; /* White text on hover */
+}
+
+/* Navigation styles */
+.react-datepicker__navigation {
+    border-color: #666; /* Dark gray arrow borders */
+}
+
+.react-datepicker__navigation:hover {
+    border-color: #333; /* Darker gray arrow borders on hover */
+}
+
+/* Month and Year dropdown styles */
+.react-datepicker__month-dropdown,
+.react-datepicker__year-dropdown {
+    background-color: #f8f8f8; /* Light gray background */
+    border: 1px solid #ccc; /* Light gray border */
+}
+
+.react-datepicker__month-dropdown:hover,
+.react-datepicker__year-dropdown:hover {
+    background-color: #e0e0e0; /* Medium gray background on hover */
+}
+
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+    background-color: #fff; /* White background */
+    color: #333; /* Dark gray text */
+}
+
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+    background-color: #bbb; /* Light gray background on hover */
+    color: #333; /* Dark gray text on hover */
+}
+
+/* Time styles */
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
+    background-color: #fff; /* White background */
+    color: #333; /* Dark gray text */
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item--selected {
+    background-color: #666; /* Dark gray background for selected time */
+    color: #fff; /* White text for selected time */
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li:hover {
+    background-color: #bbb; /* Light gray background on hover */
+    color: #333; /* Dark gray text on hover */
+}
