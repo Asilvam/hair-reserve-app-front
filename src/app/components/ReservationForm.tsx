@@ -109,7 +109,7 @@ const ReservationForm: React.FC = () => {
                 {selectedTime && (
                     <Select
                         value={selectedTime}
-                        onChange={(option) => setSelectedTime(option)}
+                        onChange={(option: any) => setSelectedTime(option)}
                         options={timeSlots}
                         className={styles.selectContainer}
                         instanceId={timeId}
