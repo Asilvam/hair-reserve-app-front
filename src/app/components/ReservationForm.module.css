@@ -19,11 +19,20 @@
 }
 
 .input {
-    /* Existing styles */
     padding: 8px;
     font-size: 16px;
     width: 100%;
-    color: #333; /* Text color */
+    color: #333; /* Dark gray text */
+    background-color: #fff; /* White background */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.input:focus {
+    border-color: #666; /* Dark gray border when focused */
+    box-shadow: 0 0 0 1px #666; /* Dark gray box-shadow when focused */
 }
 
 .datepickerWrapper {
@@ -65,3 +74,22 @@
     width: 100%;
 }
 
+/* Custom styles for react-select to ensure grayscale tones */
+.react-select__control {
+    border-color: #ccc !important; /* Light gray border */
+    background-color: #fff !important; /* White background */
+}
+
+.react-select__control--is-focused {
+    border-color: #666 !important; /* Dark gray border when focused */
+    box-shadow: 0 0 0 1px #666 !important; /* Dark gray box-shadow when focused */
+}
+
+.react-select__option--is-selected {
+    background-color: #666 !important; /* Dark gray background when selected */
+    color: #fff !important; /* White text when selected */
+}
+
+.react-select__option--is-focused {
+    background-color: #999 !important; /* Medium dark gray background when focused */
+}

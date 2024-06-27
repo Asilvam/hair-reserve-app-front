@@ -4,10 +4,15 @@ import DatePicker from 'react-datepicker';
 import { useId } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-datepicker/dist/react-datepicker.css';
-import './react-datepicker-custom.css';  // Import custom datepicker styles
 import styles from './ReservationForm.module.css';
 
+// Dynamically import react-select to avoid server-side rendering issues
 const Select = dynamic(() => import('react-select'), { ssr: false });
+
+interface OptionType {
+    value: string;
+    label: string;
+}
 
 const generateDateOptions = () => {
     const dates = [];
@@ -23,7 +28,7 @@ const generateDateOptions = () => {
 };
 
 const generateTimeSlots = () => {
-    const times = [];
+    const times: OptionType[] = [];
     for (let i = 9; i <= 18; i++) {
         const hour = i.toString().padStart(2, '0');
         times.push({ value: `${hour}:00`, label: `${hour}:00` });
@@ -35,7 +40,7 @@ const dateOptions = generateDateOptions();
 const timeSlots = generateTimeSlots();
 
 const customSelectStyles = {
-    control: (provided: any , state: any) => ({
+    control: (provided: any, state: any) => ({
         ...provided,
         borderColor: state.isFocused ? '#666' : '#ccc', // Change the border color when focused
         boxShadow: state.isFocused ? '0 0 0 1px #666' : 'none', // Change the box-shadow when focused
@@ -58,7 +63,7 @@ const customSelectStyles = {
 const ReservationForm: React.FC = () => {
     const [name, setName] = useState('');
     const [selectedDate, setSelectedDate] = useState<Date | null>(dateOptions[0]);
-    const [selectedTime, setSelectedTime] = useState<{ value: string, label: string } | null>(timeSlots[0]);
+    const [selectedTime, setSelectedTime] = useState<OptionType | null>(timeSlots[0]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,13 +71,6 @@ const ReservationForm: React.FC = () => {
             const dateTime = `${selectedDate.toISOString().split('T')[0]}T${selectedTime.value}:00`;
             alert(`Reservation made for ${name} on ${dateTime} for ${selectedTime.label}`);
         }
-    };
-
-    const handleReset = () => {
-        setName('');
-        setSelectedDate(dateOptions[0]);
-        setSelectedTime(timeSlots[0]);
-        // router.push('/'); // Navigate back to the principal page
     };
 
     const nameId = useId();
@@ -121,9 +119,11 @@ const ReservationForm: React.FC = () => {
             </div>
 
             <button type="submit" className={styles.button}>
-                Reservar
+                Reserve
             </button>
-
+            <button type="reset" className={styles.button}>
+                Cancelar
+            </button>
         </form>
     );
 };
