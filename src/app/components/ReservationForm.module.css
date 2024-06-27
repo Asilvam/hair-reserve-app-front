@@ -74,7 +74,6 @@
     width: 100%;
 }
 
-/* Custom styles for react-select to ensure grayscale tones */
 .react-select__control {
     border-color: #ccc !important; /* Light gray border */
     background-color: #fff !important; /* White background */

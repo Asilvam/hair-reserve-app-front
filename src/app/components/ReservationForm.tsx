@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './ReservationForm.module.css';
 
-// Dynamically import react-select to avoid server-side rendering issues
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface OptionType {
@@ -17,13 +16,11 @@ interface OptionType {
 const generateDateOptions = () => {
     const dates = [];
     const today = new Date();
-
     for (let i = 0; i < 3; i++) {
         const date = new Date(today);
         date.setDate(today.getDate() + i);
         dates.push(date);
     }
-
     return dates;
 };
 
@@ -117,7 +114,6 @@ const ReservationForm: React.FC = () => {
                     />
                 )}
             </div>
-
             <button type="submit" className={styles.button}>
                 Reserve
             </button>
