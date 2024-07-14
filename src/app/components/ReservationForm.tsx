@@ -5,6 +5,7 @@ import { useId } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './ReservationForm.module.css';
+import Swal from 'sweetalert2';
 
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -61,18 +62,72 @@ const ReservationForm: React.FC = () => {
     const [name, setName] = useState('');
     const [selectedDate, setSelectedDate] = useState<Date | null>(dateOptions[0]);
     const [selectedTime, setSelectedTime] = useState<OptionType | null>(timeSlots[0]);
+    const [phoneNumber, setPhoneNumber] = useState('+569');
+
+    const validatePhoneNumber = (value: string) => {
+        const phoneRegex = /^\+569\d{8}$/;
+        return phoneRegex.test(value);
+    }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (selectedDate && selectedTime) {
-            const dateTime = `${selectedDate.toISOString().split('T')[0]}T${selectedTime.value}:00`;
-            alert(`Reservation made for ${name} on ${dateTime} for ${selectedTime.label}`);
+
+        // Validate Name
+        if (!name) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Name is required!',
+            });
+            return;
         }
+
+        // Validate Date
+        if (!selectedDate) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Date is required!',
+            });
+            return;
+        }
+
+        // Validate Time
+        if (!selectedTime) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Time is required!',
+            });
+            return;
+        }
+
+        // Validate Phone Number
+        if (!validatePhoneNumber(phoneNumber)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Invalid phone number format. Please use +56912345678 format.',
+            });
+            return;
+        }
+
+        const dateTime = `${selectedDate.toISOString().split('T')[0]}T${selectedTime.value}:00`;
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: `Reservation made for ${name} on ${dateTime} with phone number ${phoneNumber}`,
+        });
+
+        // Your form submission logic here
+        console.log('Form submitted', { name, selectedDate, selectedTime, phoneNumber });
     };
+
 
     const nameId = useId();
     const dateId = useId();
     const timeId = useId();
+    const phoneId = useId();
 
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -113,6 +168,17 @@ const ReservationForm: React.FC = () => {
                         required
                     />
                 )}
+            </div>
+            <div className={styles.formGroup}>
+                <label htmlFor={phoneId} className={styles.label}>Phone Number</label>
+                <input
+                    type="text"
+                    id={phoneId}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className={styles.input}
+                    required
+                />
             </div>
             <button type="submit" className={styles.button}>
                 Reserve

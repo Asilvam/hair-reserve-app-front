@@ -6,7 +6,7 @@ type Reservation = {
     id: number;
     name: string;
     date: string;
-    service: string;
+    phoneNumber: string;
 };
 
 const Reservations: React.FC = () => {
@@ -20,7 +20,6 @@ const Reservations: React.FC = () => {
                     <li key={reservation.id} className="border-b py-2">
                         <p className="font-bold">{reservation.name}</p>
                         <p>{new Date(reservation.date).toLocaleString()}</p>
-                        <p>{reservation.service}</p>
                     </li>
                 ))}
             </ul>
