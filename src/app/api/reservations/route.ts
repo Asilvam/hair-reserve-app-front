@@ -21,6 +21,10 @@ export async function GET() {
 export async function POST(request: Request) {
     const { id, name, date, phoneNumber } = await request.json();
     await connectToDatabase();
+    const reservationExist = await Reservation.findOne({ date });
+    if (reservationExist) {
+        return NextResponse.json({ error: 'Reservation already exists' }, { status: 409 });
+    }
     const reservation = new Reservation({ id, name, date, phoneNumber });
     await reservation.save();
     return NextResponse.json(reservation);

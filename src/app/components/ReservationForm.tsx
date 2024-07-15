@@ -122,9 +122,15 @@ const ReservationForm: React.FC = () => {
                 },
                 body: JSON.stringify({ id, name, date, phoneNumber }),
             });
-
             if (!response.ok) {
-                throw new Error('Error submitting reservation');
+                if (response.status === 409) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Este horario ya esta ocupado Bro!',
+                    });
+                }
+                throw new Error('Failed to submit reservation');
             }
             Swal.fire({
                 icon: 'success',
@@ -134,7 +140,7 @@ const ReservationForm: React.FC = () => {
             router.push('/reservation');
         } catch (error) {
             console.error('Error:', error);
-            alert('Failed to submit reservation');
+            // alert('Failed to submit reservation');
         }
         console.log('Form submitted', { id, name, date, phoneNumber });
     };
