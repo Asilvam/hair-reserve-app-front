@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
 // import mockReservations from "@/app/data/mockReservations";
 
 type Reservation = {
@@ -11,12 +12,22 @@ type Reservation = {
 
 const Reservations: React.FC = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+
         async function fetchReservations() {
-            const response = await fetch('/api/reservations');
-            const data = await response.json();
-            setReservations(data);
+            setLoading(true);
+            try{
+                const response = await fetch('/api/reservations');
+                const data = await response.json();
+                setReservations(data);
+            } catch (error) {
+                console.error('Error fetching reservations:', error);
+            } finally {
+                setLoading(false);
+            }
+
         }
         fetchReservations();
     }, []);
@@ -25,16 +36,24 @@ const Reservations: React.FC = () => {
 
     return (
         <div className="p-4">
-            {reservations.length === 0 ? (
-                <p>No hay reservas activas</p>
+            {loading ? (
+                <div className="flex justify-center items-center">
+                    <FaSpinner className="animate-spin text-4xl" />
+                </div>
             ) : (
                 <ul>
-                    {reservations.map((reservation) => (
-                        <li key={reservation.id} className="border-b py-2">
-                            <p className="font-bold">{reservation.name}</p>
-                            <p>{new Date(reservation.date).toLocaleString()}</p>
-                        </li>
-                    ))}
+                    {reservations.length === 0 ? (
+                        <p>No hay reservas activas</p>
+                    ) : (
+                        <ul>
+                            {reservations.map((reservation) => (
+                                <li key={reservation.id} className="border-b py-2">
+                                    <p className="font-bold">{reservation.name}</p>
+                                    <p>{new Date(reservation.date).toLocaleString()}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </ul>
             )}
         </div>
