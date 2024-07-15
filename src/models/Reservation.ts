@@ -1,14 +1,15 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 interface IReservation extends Document {
-    id: number;
+    id: string;
     name: string;
     date: string;
     phoneNumber: string;
 }
 
 const ReservationSchema: Schema<IReservation> = new Schema({
-    id: { type: Number, required: true, unique: true },
+    id: { type: String, default: uuidv4 },
     name: { type: String, required: true },
     date: { type: String, required: true },
     phoneNumber: { type: String, required: true, match: /^\+569\d{8}$/ },

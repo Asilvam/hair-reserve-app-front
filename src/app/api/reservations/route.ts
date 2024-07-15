@@ -4,7 +4,7 @@ import Reservation from '@/models/Reservation';
 
 export async function GET() {
     await connectToDatabase();
-    const reservations = await Reservation.find();
+    const reservations = await Reservation.find().sort({ date: 1, name: 1 });
     return NextResponse.json(reservations);
 }
 

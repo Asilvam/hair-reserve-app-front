@@ -69,8 +69,13 @@ const ReservationForm: React.FC = () => {
         return phoneRegex.test(value);
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
+
         e.preventDefault();
+        const dateTime = `${selectedDate?.toISOString().split('T')[0]}T${selectedTime?.value}:00`;
+        const date = dateTime;
+        const id = null;
+
 
         // Validate Name
         if (!name) {
@@ -112,14 +117,27 @@ const ReservationForm: React.FC = () => {
             return;
         }
 
-        const dateTime = `${selectedDate.toISOString().split('T')[0]}T${selectedTime.value}:00`;
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: `Reservation made for ${name} on ${dateTime} with phone number ${phoneNumber}`,
-        });
+        try {
+            const response = await fetch('/api/reservations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, name, date, phoneNumber }),
+            });
 
-        // Your form submission logic here
+            if (!response.ok) {
+                throw new Error('Error submitting reservation');
+            }
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: `Reservation made for ${name} on ${selectedDate} turn ${selectedTime} with phone number ${phoneNumber}`,
+            });
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to submit reservation');
+        }
         console.log('Form submitted', { name, selectedDate, selectedTime, phoneNumber });
     };
 
