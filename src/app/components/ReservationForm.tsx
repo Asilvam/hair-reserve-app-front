@@ -78,7 +78,11 @@ const ReservationForm: React.FC = () => {
         const dateTime = `${selectedDate?.toISOString().split('T')[0]}T${selectedTime?.value}:00`;
         const date = dateTime;
         const id = uuidv4();
-        // Validate Name
+        const now = new Date(); // Get current date and time
+        const currentDate = now.toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        const currentHour = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`; // Get current hour and minute in HH:mm format
+        const currentDateTime = `${currentDate}T${currentHour}:00`; // Combine current date and time in YYYY-MM-DDTHH:mm:ss format
+
         if (!name) {
             Swal.fire({
                 icon: 'error',
@@ -102,6 +106,15 @@ const ReservationForm: React.FC = () => {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Time is required!',
+            });
+            return;
+        }
+        // Validate date to reserve and turn
+        if (dateTime < currentDateTime) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...WTF',
+                text: 'Esa Hora ya paso Bro!!',
             });
             return;
         }
