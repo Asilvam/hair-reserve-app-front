@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import mockReservations from "@/app/data/mockReservations";
+// import mockReservations from "@/app/data/mockReservations";
 
 type Reservation = {
     id: number;
@@ -10,8 +10,18 @@ type Reservation = {
 };
 
 const Reservations: React.FC = () => {
+    const [reservations, setReservations] = useState<Reservation[]>([]);
 
-    const reservations: Reservation[] = mockReservations;
+    useEffect(() => {
+        async function fetchReservations() {
+            const response = await fetch('/api/reservations');
+            const data = await response.json();
+            setReservations(data);
+        }
+        fetchReservations();
+    }, []);
+
+    // const reservations: Reservation[] = mockReservations;
 
     return (
         <div className="p-4">
