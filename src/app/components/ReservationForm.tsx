@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from './ReservationForm.module.css';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
+import {useRouter} from "next/navigation";
 
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -60,6 +61,7 @@ const customSelectStyles = {
 };
 
 const ReservationForm: React.FC = () => {
+    const router = useRouter(); // Initialize router
     const [name, setName] = useState('');
     const [selectedDate, setSelectedDate] = useState<Date | null>(dateOptions[0]);
     const [selectedTime, setSelectedTime] = useState<OptionType | null>(timeSlots[0]);
@@ -76,8 +78,6 @@ const ReservationForm: React.FC = () => {
         const dateTime = `${selectedDate?.toISOString().split('T')[0]}T${selectedTime?.value}:00`;
         const date = dateTime;
         const id = uuidv4();
-
-
         // Validate Name
         if (!name) {
             Swal.fire({
@@ -87,7 +87,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-
         // Validate Date
         if (!selectedDate) {
             Swal.fire({
@@ -97,7 +96,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-
         // Validate Time
         if (!selectedTime) {
             Swal.fire({
@@ -107,7 +105,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-
         // Validate Phone Number
         if (!validatePhoneNumber(phoneNumber)) {
             Swal.fire({
@@ -117,7 +114,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-
         try {
             const response = await fetch('/api/reservations', {
                 method: 'POST',
@@ -133,15 +129,19 @@ const ReservationForm: React.FC = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Success!',
-                text: `Reservation made for ${name} on ${selectedDate} turn ${selectedTime} with phone number ${phoneNumber}`,
+                text: `Reservation made for ${name} with phone number ${phoneNumber}`,
             });
+            router.push('/reservation');
         } catch (error) {
             console.error('Error:', error);
             alert('Failed to submit reservation');
         }
-        console.log('Form submitted', { name, selectedDate, selectedTime, phoneNumber });
+        console.log('Form submitted', { id, name, date, phoneNumber });
     };
 
+    const handleCancel = () => {
+        router.push('/reservation'); // Navigate to the reservations page
+    };
 
     const nameId = useId();
     const dateId = useId();
@@ -202,7 +202,7 @@ const ReservationForm: React.FC = () => {
             <button type="submit" className={styles.button}>
                 Reserve
             </button>
-            <button type="reset" className={styles.button}>
+            <button type="reset" className={styles.button} onClick={handleCancel}>
                 Cancelar
             </button>
         </form>

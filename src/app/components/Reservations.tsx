@@ -25,14 +25,18 @@ const Reservations: React.FC = () => {
 
     return (
         <div className="p-4">
-            <ul>
-                {reservations.map((reservation) => (
-                    <li key={reservation.id} className="border-b py-2">
-                        <p className="font-bold">{reservation.name}</p>
-                        <p>{new Date(reservation.date).toLocaleString()}</p>
-                    </li>
-                ))}
-            </ul>
+            {reservations.length === 0 ? (
+                <p>No hay reservas activas</p>
+            ) : (
+                <ul>
+                    {reservations.map((reservation) => (
+                        <li key={reservation.id} className="border-b py-2">
+                            <p className="font-bold">{reservation.name}</p>
+                            <p>{new Date(reservation.date).toLocaleString()}</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
