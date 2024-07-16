@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import {useRouter} from "next/navigation";
 import {FaSpinner} from "react-icons/fa";
+import {toZonedTime } from 'date-fns-tz';
+
+const timeZone = 'America/Santiago';
 
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -73,6 +76,16 @@ const ReservationForm: React.FC = () => {
         const phoneRegex = /^\+569\d{8}$/;
         return phoneRegex.test(value);
     }
+
+    const handleDateChange = (date: Date | null) => {
+        if (date) {
+            const utcDate = toZonedTime(date, timeZone);
+            console.log(utcDate);
+            setSelectedDate(utcDate);
+        } else {
+            setSelectedDate(null);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -184,14 +197,13 @@ const ReservationForm: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className={styles.input}
-                    required
                 />
             </div>
             <div className={styles.formGroup}>
                 <label htmlFor={dateId} className={styles.label}>Fecha</label>
                 <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
+                    selected={selectedDate ? toZonedTime(selectedDate, timeZone) : null}
+                    onChange={(date) => handleDateChange(date)}
                     includeDates={dateOptions}
                     className={`${styles.datepickerWrapper} ${styles.input}`}
                     dateFormat="dd/MM/yyyy"
@@ -209,7 +221,6 @@ const ReservationForm: React.FC = () => {
                         instanceId={timeId}
                         inputId={timeId}
                         styles={customSelectStyles}
-                        required
                     />
                 )}
             </div>
@@ -221,7 +232,6 @@ const ReservationForm: React.FC = () => {
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     className={styles.input}
-                    required
                 />
             </div>
             <button type="submit"

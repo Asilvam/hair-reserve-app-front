@@ -8,7 +8,6 @@ export async function GET() {
     const currentDate = now.toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
     const currentHour = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`; // Get current hour and minute in HH:mm format
 
-
     const reservations = await Reservation.find({
         $or: [
             { date: { $gt: currentDate } },
