@@ -111,22 +111,23 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-        // Validate date to reserve and turn
+        // Validate Phone Number
+        if (!validatePhoneNumber(phoneNumber)) {
+            setIsLoading(false);
+            Swal.fire({
+                icon: 'error',
+                title: 'Mala...',
+                text: 'Ingresa un numero valido, asi +56912345678 ',
+            });
+            return;
+        }
+
         if (dateTime < currentDateTime) {
             setIsLoading(false);
             Swal.fire({
                 icon: 'error',
                 title: 'Que mala WTF!',
                 text: 'Esa Hora ya paso Bro!!',
-            });
-            return;
-        }
-        // Validate Phone Number
-        if (!validatePhoneNumber(phoneNumber)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Invalid phone number format. Please use +56912345678 format.',
             });
             return;
         }
