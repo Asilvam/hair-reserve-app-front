@@ -86,6 +86,7 @@ const ReservationForm: React.FC = () => {
         const currentDateTime = `${currentDate}T${currentHour}:00`; // Combine current date and time in YYYY-MM-DDTHH:mm:ss format
 
         if (!name) {
+            setIsLoading(false);
             Swal.fire({
                 icon: 'error',
                 title: 'Mala...',
@@ -93,8 +94,8 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-        // Validate Date
         if (!selectedDate) {
+            setIsLoading(false);
             Swal.fire({
                 icon: 'error',
                 title: 'Mala...',
@@ -102,8 +103,8 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-        // Validate Time
         if (!selectedTime) {
+            setIsLoading(false);
             Swal.fire({
                 icon: 'error',
                 title: 'Mala...',
@@ -111,7 +112,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-        // Validate Phone Number
         if (!validatePhoneNumber(phoneNumber)) {
             setIsLoading(false);
             Swal.fire({
@@ -121,7 +121,6 @@ const ReservationForm: React.FC = () => {
             });
             return;
         }
-
         if (dateTime < currentDateTime) {
             setIsLoading(false);
             Swal.fire({
