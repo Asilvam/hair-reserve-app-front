@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
+import { format } from 'date-fns';
 // import mockReservations from "@/app/data/mockReservations";
 
 type Reservation = {
@@ -32,6 +33,10 @@ const Reservations: React.FC = () => {
         fetchReservations();
     }, []);
 
+    const formatDateTime = (dateString: string) => {
+        return format(new Date(dateString), 'dd-MM-yy, hh:mm a');
+    };
+
     // const reservations: Reservation[] = mockReservations;
 
     return (
@@ -49,7 +54,7 @@ const Reservations: React.FC = () => {
                             {reservations.map((reservation) => (
                                 <li key={reservation.id} className="border-b py-2">
                                     <p className="font-bold">{reservation.name}</p>
-                                    <p>{new Date(reservation.date).toLocaleString()}</p>
+                                    <p>{formatDateTime(reservation.date)}</p>
                                 </li>
                             ))}
                         </ul>
