@@ -197,7 +197,6 @@ const ReservationForm: React.FC = () => {
                     className={`${styles.datepickerWrapper} ${styles.input}`}
                     dateFormat="dd/MM/yyyy"
                     id={dateId}
-                    required
                 />
             </div>
             <div className={styles.formGroup}>
