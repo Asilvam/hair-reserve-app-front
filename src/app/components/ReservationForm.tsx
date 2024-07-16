@@ -8,6 +8,7 @@ import styles from './ReservationForm.module.css';
 import Swal from 'sweetalert2';
 import { v4 as uuidv4 } from 'uuid';
 import {useRouter} from "next/navigation";
+import {FaSpinner} from "react-icons/fa";
 
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -66,6 +67,7 @@ const ReservationForm: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(dateOptions[0]);
     const [selectedTime, setSelectedTime] = useState<OptionType | null>(timeSlots[0]);
     const [phoneNumber, setPhoneNumber] = useState('+569');
+    const [isLoading, setIsLoading] = useState(false);
 
     const validatePhoneNumber = (value: string) => {
         const phoneRegex = /^\+569\d{8}$/;
@@ -73,8 +75,8 @@ const ReservationForm: React.FC = () => {
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
-
         e.preventDefault();
+        setIsLoading(true);
         const dateTime = `${selectedDate?.toISOString().split('T')[0]}T${selectedTime?.value}:00`;
         const date = dateTime;
         const id = uuidv4();
@@ -86,8 +88,8 @@ const ReservationForm: React.FC = () => {
         if (!name) {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'Name is required!',
+                title: 'Mala...',
+                text: 'Sin nombre? no pasa na!',
             });
             return;
         }
@@ -95,8 +97,8 @@ const ReservationForm: React.FC = () => {
         if (!selectedDate) {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'Date is required!',
+                title: 'Mala...',
+                text: 'y la fecha?!',
             });
             return;
         }
@@ -104,16 +106,17 @@ const ReservationForm: React.FC = () => {
         if (!selectedTime) {
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...',
-                text: 'Time is required!',
+                title: 'Mala...',
+                text: 'Debes ingresar una hora',
             });
             return;
         }
         // Validate date to reserve and turn
         if (dateTime < currentDateTime) {
+            setIsLoading(false);
             Swal.fire({
                 icon: 'error',
-                title: 'Oops...WTF',
+                title: 'Que mala WTF!',
                 text: 'Esa Hora ya paso Bro!!',
             });
             return;
@@ -137,9 +140,10 @@ const ReservationForm: React.FC = () => {
             });
             if (!response.ok) {
                 if (response.status === 409) {
+                    setIsLoading(false);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Oops...',
+                        title: 'Que mala WTF!',
                         text: 'Este horario ya esta ocupado Bro!',
                     });
                 }
@@ -147,13 +151,16 @@ const ReservationForm: React.FC = () => {
             }
             Swal.fire({
                 icon: 'success',
-                title: 'Success!',
-                text: `Reservation made for ${name} with phone number ${phoneNumber}`,
+                title: 'Buena!',
+                text: `Esta Lista tu Reserva Bro ${name} validaremos tu presencia al numero ${phoneNumber}`,
             });
             router.push('/reservation');
         } catch (error) {
             console.error('Error:', error);
             // alert('Failed to submit reservation');
+        }
+        finally {
+            setIsLoading(false);
         }
         console.log('Form submitted', { id, name, date, phoneNumber });
     };
@@ -170,7 +177,7 @@ const ReservationForm: React.FC = () => {
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formGroup}>
-                <label htmlFor={nameId} className={styles.label}>Name</label>
+                <label htmlFor={nameId} className={styles.label}>Tu nombre</label>
                 <input
                     type="text"
                     id={nameId}
@@ -181,7 +188,7 @@ const ReservationForm: React.FC = () => {
                 />
             </div>
             <div className={styles.formGroup}>
-                <label htmlFor={dateId} className={styles.label}>Date</label>
+                <label htmlFor={dateId} className={styles.label}>Fecha</label>
                 <DatePicker
                     selected={selectedDate}
                     onChange={(date) => setSelectedDate(date)}
@@ -193,7 +200,7 @@ const ReservationForm: React.FC = () => {
                 />
             </div>
             <div className={styles.formGroup}>
-                <label htmlFor={timeId} className={styles.label}>Time</label>
+                <label htmlFor={timeId} className={styles.label}>Hora</label>
                 {selectedTime && (
                     <Select
                         value={selectedTime}
@@ -208,7 +215,7 @@ const ReservationForm: React.FC = () => {
                 )}
             </div>
             <div className={styles.formGroup}>
-                <label htmlFor={phoneId} className={styles.label}>Phone Number</label>
+                <label htmlFor={phoneId} className={styles.label}>Tu numero de celular</label>
                 <input
                     type="text"
                     id={phoneId}
@@ -218,8 +225,17 @@ const ReservationForm: React.FC = () => {
                     required
                 />
             </div>
-            <button type="submit" className={styles.button}>
-                Reserve
+            <button type="submit"
+                    className={styles.button}
+                    disabled={isLoading}
+            >
+                {isLoading ? (
+                    <div className="flex justify-center items-center">
+                        <FaSpinner className="animate-spin text-4xl" />
+                    </div>
+                ) : (
+                    'Reserve'
+                )}
             </button>
             <button type="reset" className={styles.button} onClick={handleCancel}>
                 Cancelar
